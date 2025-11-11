@@ -20,9 +20,9 @@
 
 ### Part 2
 1. Create a new text field labeled "Result"
-2. Add it to the external `JPanel` in such a way that it gets on the top of the frame (`Borderlayout.NORTH`)
+2. Add it to the external `JPanel` in such a way that it gets on the top of the frame (`Borderlayout.NORTH`) X
 3. Test your application. Verify that you can see a new Text field, but it is useless
 
 ### Part 3
-1. Modify the application in such a way that the text field displays the same number that gets printed
+1. Modify the application in such a way that the text field displays the same number that gets printed X
 2. Test it

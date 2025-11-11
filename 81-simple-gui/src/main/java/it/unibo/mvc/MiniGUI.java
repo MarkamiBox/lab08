@@ -1,8 +1,12 @@
 package it.unibo.mvc;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+//import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -31,19 +35,32 @@ public class MiniGUI {
     public MiniGUI() {
         final JPanel canvas = new JPanel();
         canvas.setLayout(new BorderLayout());
+        /* Part 1 */
+        final JPanel mypanel = new JPanel();
+        mypanel.setLayout(new BoxLayout(mypanel, BoxLayout.LINE_AXIS));
+        canvas.add(mypanel, BorderLayout.CENTER);
         final JButton write = new JButton("Print a random number on standard output");
-        canvas.add(write, BorderLayout.CENTER);
+        mypanel.add(write, BorderLayout.CENTER);
+        /* Part 2 */
+        final JTextField textField = new JTextField();
+        canvas.add(textField, BorderLayout.NORTH);
         frame.setContentPane(canvas);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         /*
          * Handlers
          */
-        write.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                System.out.println(randomGenerator.nextInt());
+        write.addActionListener(
+            new ActionListener() {
+                @Override
+                public void actionPerformed(final ActionEvent e) {
+                    /* Part 3 */
+                    final int i = randomGenerator.nextInt();
+                    /* Requested by the exercise */
+                    System.out.println(i); // NOPMD
+                    textField.setText(Integer.toString(i));
+                }
             }
-        });
+        );
     }
 
     private void display() {
@@ -56,6 +73,7 @@ public class MiniGUI {
          * specify the size of a window in pixel: it takes into account the
          * current resolution.
          */
+
         final Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         final int sw = (int) screen.getWidth();
         final int sh = (int) screen.getHeight();
@@ -65,10 +83,12 @@ public class MiniGUI {
          * flag makes the OS window manager take care of the default positioning
          * on screen. Results may vary, but it is generally the best choice.
          */
+
         frame.setLocationByPlatform(true);
         /*
          * Resize the frame to minimum size
          */
+
         frame.pack();
         /*
          * OK, ready to pull the frame onscreen
