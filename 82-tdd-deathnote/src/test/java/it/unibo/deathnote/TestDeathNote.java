@@ -6,81 +6,78 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.junit.jupiter.api.Test;
 
 class TestDeathNote {
-
-    @Test
-    void TestDeathNote() throws InterruptedException{
         
-        final DeathNoteImpl newImp1 = new DeathNoteImpl();
-        /*TODO Multiple test for section */
         /* 1 */
-        try {
-            newImp1.getRule(0);
-        } catch (Exception e) {
-            assertEquals(new IllegalArgumentException(), e);
-        }
-
-        try {
-            newImp1.getRule(-1);
-        } catch (Exception e) {
-            assertEquals(new IllegalArgumentException(), e);
-        }
+        @Test
+        void TestDNFirstRule(){
+            final DeathNoteImpl newImp = new DeathNoteImpl();
+            try {
+                newImp.getRule(0);  
+                newImp.getRule(-1); 
+            } catch (IllegalArgumentException e){
+                assertNotNull(e.getMessage());
+                assertFalse(e.getMessage().isBlank());
+            }
+        } 
 
         /* 2 */
-        for(int i = 0; i < newImp1.RULES.size(); i++){
-            assertNotNull(newImp1.getRule(i));
+        @Test
+        void TestDNSecondRule(){
+            final DeathNoteImpl newImp = new DeathNoteImpl();            
+            for(int i = 0; i < newImp.RULES.size(); i++){
+                assertNotNull(newImp.getRule(i));
+                assertFalse(newImp.getRule(i).isBlank());
+            }
         }
-
-        /* 3 */
-        assertEquals(false, newImp1.isNameWritten("pippo"));
-        newImp1.writeName("pippo");
-        assertTrue(newImp1.isNameWritten("pippo"));
-        assertFalse(newImp1.isNameWritten("paolo"));
-        assertFalse( newImp1.isNameWritten(""));
-
-        /* 4 */
-        final DeathNoteImpl newImp2 = new DeathNoteImpl();
-
-        try {
-            newImp2.writeDeathCause("investito");
-        } catch (Exception e) {
-            assertEquals(new IllegalStateException(), e);
-        }
-
-        newImp2.writeName("Franco");
-        assertEquals("heart attack", newImp2.getDeathCause("Franco"));
         
-        newImp2.writeName("Pippo");
-        assertTrue(newImp2.writeDeathCause("karting accident"));
-        assertEquals("karting accident", newImp2.getDeathCause("Pippo"));
-
-        Thread.sleep(100);
-
-        newImp2.writeDeathCause("investito");
-        assertEquals("karting accident", newImp2.getDeathCause("Pippo"));
-
-        /* 5 */
-        final DeathNoteImpl newImp3 = new DeathNoteImpl(); 
-
-        try {
-            newImp3.writeDetails("inciampa");
-        } catch (Exception e) {
-            assertEquals(new IllegalArgumentException(), e);
+        /* 3 */
+        @Test
+        void TestDNThirdRule(){
+            final DeathNoteImpl newImp = new DeathNoteImpl();
+            assertFalse(newImp.isNameWritten("pippo"));
+            newImp.writeName("pippo");
+            assertTrue(newImp.isNameWritten("pippo"));
+            assertFalse(newImp.isNameWritten("paolo"));
+            assertFalse(newImp.isNameWritten(""));
         }
-
-        newImp3.writeName("Pippo");
-        assertEquals("", newImp3.getDeathDetails("Pippo"));
-        assertTrue(newImp3.writeDetails("ran for too long"));
-        assertEquals("ran for too long", newImp3.getDeathDetails("Pippo"));
-
-        newImp3.writeName("Franco");
-
-        Thread.sleep(6100);
-
-        newImp3.writeDetails("walked");
-        assertEquals("", newImp3.getDeathDetails("Franco"));
-    }
+    
+        /* 4 */
+        @Test
+        void TestDNFourthRule(){
+            final DeathNoteImpl newImp = new DeathNoteImpl();
+            try {
+                newImp.writeDeathCause("investito");
+            } catch (IllegalStateException e)
+                
+            }
+            newImp.writeName("Franco");
+            assertEquals("heart attack", newImp.getDeathCause("Franco"));
+            newImp.writeName("Pippo");
+            assertTrue(newImp.writeDeathCause("karting accident"));
+            assertEquals("karting accident", newImp.getDeathCause("Pippo"));
+            Thread.sleep(100);
+            newImp.writeDeathCause("investito");
+            assertEquals("karting accident", newImp.getDeathCause("Pippo"));
+        }
+    
+        /* 5 */
+        @Test
+        void TestDNFifthRUle(){
+            final DeathNoteImpl newImp = new DeathNoteImpl();
+            try {
+                newImp.writeDetails("inciampa");
+            } catch (IllegalArgumentException e) {
+            }
+            newImp.writeName("Pippo");
+            assertEquals("", newImp.getDeathDetails("Pippo"));
+            assertTrue(newImp.writeDetails("ran for too long"));
+            assertEquals("ran for too long", newImp.getDeathDetails("Pippo"));
+            newImp.writeName("Franco");
+            Thread.sleep(6100);
+            newImp.writeDetails("walked");
+            assertEquals("", newImp.getDeathDetails("Franco"));
+        }
 }
