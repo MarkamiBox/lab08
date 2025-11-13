@@ -10,10 +10,11 @@ import org.junit.jupiter.api.Test;
 
 class TestDeathNote {
         
+        final DeathNoteImpl newImp = new DeathNoteImpl();
+    
         /* 1 */
         @Test
         void TestDNFirstRule(){
-            final DeathNoteImpl newImp = new DeathNoteImpl();
             try {
                 newImp.getRule(0);  
                 newImp.getRule(-1); 
@@ -26,7 +27,6 @@ class TestDeathNote {
         /* 2 */
         @Test
         void TestDNSecondRule(){
-            final DeathNoteImpl newImp = new DeathNoteImpl();            
             for(int i = 0; i < newImp.RULES.size(); i++){
                 assertNotNull(newImp.getRule(i));
                 assertFalse(newImp.getRule(i).isBlank());
@@ -36,7 +36,6 @@ class TestDeathNote {
         /* 3 */
         @Test
         void TestDNThirdRule(){
-            final DeathNoteImpl newImp = new DeathNoteImpl();
             assertFalse(newImp.isNameWritten("pippo"));
             newImp.writeName("pippo");
             assertTrue(newImp.isNameWritten("pippo"));
@@ -47,7 +46,6 @@ class TestDeathNote {
         /* 4 */
         @Test
         void TestDNFourthRule(){
-            final DeathNoteImpl newImp = new DeathNoteImpl();
             try {
                 newImp.writeDeathCause("investito");
             } catch (IllegalStateException e)
@@ -66,7 +64,6 @@ class TestDeathNote {
         /* 5 */
         @Test
         void TestDNFifthRUle(){
-            final DeathNoteImpl newImp = new DeathNoteImpl();
             try {
                 newImp.writeDetails("inciampa");
             } catch (IllegalArgumentException e) {
