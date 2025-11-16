@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DeathNoteImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">82-tdd-deathnote</a> &gt; <a href="index.source.html" class="el_package">it.unibo.deathnote.impl</a> &gt; <span class="el_source">DeathNoteImpl.java</span></div><h1>DeathNoteImpl.java</h1><pre class="source lang-java linenums">package it.unibo.deathnote.impl;
+
+import java.util.HashMap;
+import java.util.Map;
+import it.unibo.deathnote.api.DeathNote;
+
+/**
+ * Implementation of the DeathNote interface.
+ */
+<span class="fc" id="L10">public final class DeathNoteImpl implements DeathNote {</span>
+<span class="fc" id="L11">    private final Map&lt;String, DeathInfo&gt; deathnote = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L12">    private String lastName = &quot;&quot;;</span>
+
+    @Override
+    public String getRule(final int ruleNumber) {
+<span class="pc bpc" id="L16" title="1 of 4 branches missed.">        if (ruleNumber &lt; 1 || ruleNumber &gt; RULES.size()) {</span>
+<span class="fc" id="L17">            throw new IllegalArgumentException(&quot;This rule doesn't exist&quot;);</span>
+        }
+<span class="fc" id="L19">        return RULES.get(ruleNumber - 1);</span>
+    }
+
+    @Override
+    @SuppressWarnings(&quot;PMD.AvoidThrowingNullPointerException&quot;) //required by the interface
+    public void writeName(final String name) {
+<span class="pc bpc" id="L25" title="1 of 2 branches missed.">        if (name == null) {</span>
+<span class="nc" id="L26">            throw new NullPointerException();</span>
+        }
+<span class="fc" id="L28">        final long time = System.currentTimeMillis();</span>
+<span class="fc" id="L29">        deathnote.put(name, new DeathInfo(time, &quot;&quot;, &quot;&quot;));</span>
+<span class="fc" id="L30">        lastName = name;</span>
+<span class="fc" id="L31">    }</span>
+
+    @Override
+    public boolean writeDeathCause(final String cause) {
+<span class="pc bpc" id="L35" title="1 of 4 branches missed.">        if (&quot;&quot;.equals(lastName) || cause == null) {</span>
+<span class="fc" id="L36">            throw new IllegalStateException();</span>
+        }
+<span class="fc" id="L38">        final DeathInfo infoname = deathnote.get(lastName);</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">        if (!&quot;&quot;.equals(infoname.getCause())) {</span>
+<span class="fc" id="L40">             return false;</span>
+        }
+<span class="fc" id="L42">        final long actualTime = System.currentTimeMillis();</span>
+<span class="fc" id="L43">        final long settedTime = infoname.getTime();</span>
+<span class="fc" id="L44">        final int time = 40;</span>
+<span class="pc bpc" id="L45" title="1 of 2 branches missed.">        if (actualTime &lt;= settedTime + time) {</span>
+<span class="fc" id="L46">            infoname.setCause(cause);</span>
+<span class="fc" id="L47">            infoname.setTime(actualTime);</span>
+<span class="fc" id="L48">            return true;</span>
+        }
+<span class="nc" id="L50">        return false;</span>
+    }
+
+    @Override
+    public boolean writeDetails(final String details) {
+<span class="pc bpc" id="L55" title="1 of 4 branches missed.">        if (&quot;&quot;.equals(lastName) || details == null) {</span>
+<span class="fc" id="L56">            throw new IllegalStateException();</span>
+        }
+<span class="fc" id="L58">        final DeathInfo infoname = deathnote.get(lastName);</span>
+<span class="pc bpc" id="L59" title="1 of 2 branches missed.">        if (!&quot;&quot;.equals(infoname.getDetails())) {</span>
+<span class="nc" id="L60">             return false;</span>
+        }
+<span class="fc" id="L62">        final long actualTime = System.currentTimeMillis();</span>
+<span class="fc" id="L63">        final long settedTime = infoname.getTime();</span>
+<span class="fc" id="L64">        final int time = 6040;</span>
+<span class="fc bfc" id="L65" title="All 2 branches covered.">        if (actualTime &lt;= settedTime + time) {</span>
+<span class="fc" id="L66">            infoname.setDetails(details);</span>
+<span class="fc" id="L67">            return true;</span>
+        }
+<span class="fc" id="L69">        return false;</span>
+    }
+
+    @Override
+    public boolean isNameWritten(final String name) {
+<span class="fc" id="L74">        return deathnote.containsKey(name);</span>
+    }
+
+    @Override
+    public String getDeathCause(final String name) {
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">        if (!this.isNameWritten(name)) {</span>
+<span class="nc" id="L80">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc" id="L82">        final String cause = deathnote.get(name).cause;</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">        if (&quot;&quot;.equals(cause)) {</span>
+<span class="fc" id="L84">            return &quot;heart attack&quot;;</span>
+        } else {
+<span class="fc" id="L86">            return cause;</span>
+        }
+    }
+
+    @Override
+    public String getDeathDetails(final String name) {
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">        if (!this.isNameWritten(name)) {</span>
+<span class="nc" id="L93">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc" id="L95">        return deathnote.get(name).getDetails();</span>
+    }
+
+    /* Internal class that contains infos */
+    private static class DeathInfo {
+        private long time;
+        private String cause;
+        private String details;
+
+<span class="fc" id="L104">        DeathInfo(final long time, final String cause, final String details) {</span>
+<span class="fc" id="L105">            this.time = time;</span>
+<span class="fc" id="L106">            this.cause = cause;</span>
+<span class="fc" id="L107">            this.details = details;</span>
+<span class="fc" id="L108">        }</span>
+
+        public long getTime() {
+<span class="fc" id="L111">            return time;</span>
+        }
+
+        public void setTime(final long newTime) {
+<span class="fc" id="L115">            this.time = newTime;</span>
+<span class="fc" id="L116">        }</span>
+
+        public String getCause() {
+<span class="fc" id="L119">            return cause;</span>
+        }
+
+        public void setCause(final String newCause) {
+<span class="fc" id="L123">            this.cause = newCause;</span>
+<span class="fc" id="L124">        }</span>
+
+        public String getDetails() {
+<span class="fc" id="L127">            return details;</span>
+        }
+
+        public void setDetails(final String newDetails) {
+<span class="fc" id="L131">            this.details = newDetails;</span>
+<span class="fc" id="L132">        }</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -1,0 +1,3 @@
+C:\Users\Salvatore\Desktop\Java\lab08\82-tdd-deathnote\build\classes\java\main\it\unibo\deathnote\api\DeathNote.class
+C:\Users\Salvatore\Desktop\Java\lab08\82-tdd-deathnote\build\classes\java\main\it\unibo\deathnote\impl\DeathNoteImpl$DeathInfo.class
+C:\Users\Salvatore\Desktop\Java\lab08\82-tdd-deathnote\build\classes\java\main\it\unibo\deathnote\impl\DeathNoteImpl.class

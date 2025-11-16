@@ -1,92 +1,134 @@
 package it.unibo.deathnote.impl;
+
+import java.util.HashMap;
+import java.util.Map;
 import it.unibo.deathnote.api.DeathNote;
 
-public class DeathNoteImpl implements DeathNote {
-    private static class DeathInfo{
-        long time;
-        String cause;
-        String details;
-        
-        DeathInfo(long time, String cause, String details){
-            this.time = time;
-            this.cause = cause;
-            this.deatils = deatils;
-        }
-    }
-    final Map<String, DeathInfo> deathnote;
-    final lastName;
-    
+/**
+ * Implementation of the DeathNote interface.
+ */
+public final class DeathNoteImpl implements DeathNote {
+    private final Map<String, DeathInfo> deathnote = new HashMap<>();
+    private String lastName = "";
+
     @Override
     public String getRule(final int ruleNumber) {
-        if(ruleNumber < 1 || ruleNumber > RULES.Size()){
-            throw new IllegalArgumentException();
+        if (ruleNumber < 1 || ruleNumber > RULES.size()) {
+            throw new IllegalArgumentException("This rule doesn't exist");
         }
         return RULES.get(ruleNumber - 1);
     }
 
     @Override
+    @SuppressWarnings("PMD.AvoidThrowingNullPointerException") //required by the interface
     public void writeName(final String name) {
-        if(name == null){
+        if (name == null) {
             throw new NullPointerException();
         }
-        long time = System.currentTimeMillis();
+        final long time = System.currentTimeMillis();
         deathnote.put(name, new DeathInfo(time, "", ""));
         lastName = name;
     }
 
     @Override
-    public boolean writeDeathCause(String cause) {
-        if(lastName == "" || cause == null){
+    public boolean writeDeathCause(final String cause) {
+        if ("".equals(lastName) || cause == null) {
             throw new IllegalStateException();
         }
-        long actualTime = System.currentTimeMillis();
-        long settedTime = deathnote.get(lastName).time;
-        if((settedTime+40) < actualTime){
-            deathnote.get(lastName).cause = cause;
-            return true
+        final DeathInfo infoname = deathnote.get(lastName);
+        if (!"".equals(infoname.getCause())) {
+             return false;
         }
-        return false
+        final long actualTime = System.currentTimeMillis();
+        final long settedTime = infoname.getTime();
+        final int time = 40;
+        if (actualTime <= settedTime + time) {
+            infoname.setCause(cause);
+            infoname.setTime(actualTime);
+            return true;
+        }
+        return false;
     }
 
     @Override
-    public boolean writeDetails(String details) {
-        if(lastName == "" || details == null){
+    public boolean writeDetails(final String details) {
+        if ("".equals(lastName) || details == null) {
             throw new IllegalStateException();
         }
-        long actualTime = System.currentTimeMillis();
-        long settedTime = deathnote.get(lastName).time;
-        if((settedTime+640) < actualTime){
-            deathnote.get(lastName).detail = details;
-            return true
+        final DeathInfo infoname = deathnote.get(lastName);
+        if (!"".equals(infoname.getDetails())) {
+             return false;
         }
+        final long actualTime = System.currentTimeMillis();
+        final long settedTime = infoname.getTime();
+        final int time = 6040;
+        if (actualTime <= settedTime + time) {
+            infoname.setDetails(details);
+            return true;
+        }
+        return false;
     }
 
     @Override
-    public String getDeathCause(String name) {
-        if(deathnote.isNameWritten(name)){
+    public boolean isNameWritten(final String name) {
+        return deathnote.containsKey(name);
+    }
+
+    @Override
+    public String getDeathCause(final String name) {
+        if (!this.isNameWritten(name)) {
             throw new IllegalArgumentException();
         }
-        string cause = deathnote.get(name).cause;
-        if(cause == ""){
+        final String cause = deathnote.get(name).cause;
+        if ("".equals(cause)) {
             return "heart attack";
-        }
-        else{
+        } else {
             return cause;
         }
     }
 
     @Override
-    public String getDeathDetails(String name) {
-        if(deathnote.isNameWritten(name)){
+    public String getDeathDetails(final String name) {
+        if (!this.isNameWritten(name)) {
             throw new IllegalArgumentException();
         }
-        string detail = deathnote.get(name).deatil;
-        return detail;
+        return deathnote.get(name).getDetails();
     }
 
-    @Override
-    public boolean isNameWritten(String name) {
-        return deathnote.cotainsKey(name);
+    /* Internal class that contains infos */
+    private static class DeathInfo {
+        private long time;
+        private String cause;
+        private String details;
+
+        DeathInfo(final long time, final String cause, final String details) {
+            this.time = time;
+            this.cause = cause;
+            this.details = details;
+        }
+
+        public long getTime() {
+            return time;
+        }
+
+        public void setTime(final long newTime) {
+            this.time = newTime;
+        }
+
+        public String getCause() {
+            return cause;
+        }
+
+        public void setCause(final String newCause) {
+            this.cause = newCause;
+        }
+
+        public String getDetails() {
+            return details;
+        }
+
+        public void setDetails(final String newDetails) {
+            this.details = newDetails;
+        }
     }
-    
 }
